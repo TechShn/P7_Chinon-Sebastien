@@ -1,0 +1,29 @@
+.block-socialMedia {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.title-socialMedia {
+    width: 30%;
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.list-socialMedia {
+    width: 30%;
+    margin-bottom: 30px;
+}
+
+.list-socialMedia > li {
+    font-size: small;
+    font-weight: 400;
+    color: white;
+    margin: 5px;
+    &:hover {
+        transition: all 0.5s;
+        color: black;
+        font-size: medium;
+
+    }
+}

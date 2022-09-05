@@ -1,0 +1,41 @@
+.block-banner {
+    box-sizing: border-box;
+    display: flex;
+    color: maroon;
+    background-color: yellow;
+    border: 3px solid black;
+    border-radius: 10px;
+    height: 150px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.banner-title {
+    position: relative;
+    left: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 70%;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+}
+
+.banner-logo {
+    height: 100%;
+    width: 15%;
+    border: 1px solid black;
+}
+
+@media screen and (max-width: 767px) {
+    .banner-title {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 992px) and (min-width: 768px) {
+    .banner-title {
+        font-size: 23px;
+    }
+}

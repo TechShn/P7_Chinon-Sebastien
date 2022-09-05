@@ -1,0 +1,30 @@
+.block-cart {
+
+    text-align: center;
+    height: 1000px;
+    width: 15%;
+    color: maroon;
+    background-color: lightgoldenrodyellow;
+    border: 2px solid black;
+}
+
+.cart-li {
+    color: black;
+    text-align: left;
+}
+
+.cart-li li {
+    
+}
+
+@media screen and (max-width: 767px) {
+    .cart {
+        
+    }
+}
+
+@media screen and (max-width: 992px) and (min-width: 768px) {
+    .cart {
+        width: 15%;
+    }
+}

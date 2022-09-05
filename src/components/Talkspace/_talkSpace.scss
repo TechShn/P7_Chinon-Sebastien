@@ -1,0 +1,17 @@
+.talkspace {
+    height: 980px;
+    width: 80%;
+    margin: 20px 2% 0% 2%;
+}
+
+@media screen and (max-width: 767px) {
+    .talkspace {
+        
+    }
+}
+
+@media screen and (max-width: 992px) and (min-width: 768px) {
+    .talkspace {
+        width: 80%;
+    }
+}

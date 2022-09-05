@@ -1,0 +1,27 @@
+.block-newsfeed {
+    height: 790px;
+    width: 100%;
+    background-color: lightgreen;
+    border: 2px solid black;
+    margin-top: 20px;
+}
+
+.blockNewsFeed {
+    height: 50px;
+    width: 90%;
+    border: 2px solid black;
+    background-color: white;
+    margin: 5%;
+}
+
+@media screen and (max-width: 767px) {
+    .lmj-banner {
+        
+    }
+}
+
+@media screen and (max-width: 992px) and (min-width: 768px) {
+    .lmj-banner {
+        
+    }
+}

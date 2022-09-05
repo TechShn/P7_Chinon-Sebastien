@@ -1,0 +1,17 @@
+.block-footer {
+    width: 100%;
+    border: 2px solid black;
+    background-color: grey;
+}
+
+@media screen and (max-width: 767px) {
+    .footer {
+        
+    }
+}
+
+@media screen and (max-width: 992px) and (min-width: 768px) {
+    .footer {
+        
+    }
+}
