@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Horloge from '../Horloge/Horloge';
 
 
 class Cart extends Component {
@@ -43,14 +44,12 @@ class Cart extends Component {
     render() {
         if(this.state.user2 ) {
         const member = this.state.user;
-        const member2 = this.state.user2;
-        console.log(this);
+        
         return (
             <div className='block-cart'>
                 <h2>membres</h2>
                 <ul>
                     <li>{member}</li>
-                    <li>{member2}</li>
                 </ul>
                 <button onClick={this.modifySet}>Modifier  set</button>
                 <div className="test">
@@ -58,6 +57,7 @@ class Cart extends Component {
                     <button onClick={this.comptFuncMoin} className='btn-test'>-</button>
                     <button onClick={this.comptFuncReset} className='btn-test'>reset</button>
                     <p>Compteur = {this.state.compteur} </p>
+                    <Horloge />
                 </div>
             </div>
         );

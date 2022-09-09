@@ -1,7 +1,9 @@
-.block-footer {
+.block-footer { 
+    font-size: large;
+    color: rgb(126, 38, 38);
     width: 100%;
     border: 2px solid black;
-    background-color: grey;
+    background-color: #353535;
 }
 
 @media screen and (max-width: 767px) {

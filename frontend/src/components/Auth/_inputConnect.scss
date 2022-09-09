@@ -1,0 +1,90 @@
+.block-inputConect {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 800px;
+    & > h1 {
+        margin-bottom: 50px;
+    }
+}
+
+.block-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 40%;
+    height: 500px;
+    border: 1px solid lightgrey;
+    border-radius: 15px;
+    background-color: lightgray;
+    & > h2 {
+        margin: 10px;
+    }
+
+    & > img {
+        height: 100px;
+        width: 300px;
+        object-fit: cover;
+    }
+}
+
+.block-email {
+    
+    font-size: 20px;
+    margin-top: 25px;
+    & > input {
+        height: 50px;
+        width: 200px;
+        border: 2px solid gray;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        text-align: center;
+    }
+}
+
+.block-password {
+    margin-top: 5px;
+    
+    & > input {
+        height: 50px;
+        width: 200px;
+        text-align: center;
+        border: 2px solid gray;
+    }
+}
+
+.block-submitConect {
+    margin-top: 5px;
+    width: 200px;
+
+    & > input {
+    height: 50px;
+    width: 200px;
+    font-weight: 700;
+    color: white;
+    background-color: maroon;
+    border: 2px solid gray;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    cursor: pointer;
+    };
+}
+
+.msg-ErrorEmail {
+    
+    width: 200px;
+    color: red;
+    font-size: medium;
+    overflow: hidden;
+}
+
+.msg-ErrorPassword {
+    
+    width: 200px;
+    color: red;
+    font-size: medium;
+    overflow: hidden;
+}

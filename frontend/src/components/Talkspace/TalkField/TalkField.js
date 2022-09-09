@@ -1,3 +1,5 @@
+
+
 function addAnImage() {
     alert("C'est gagné")
 }

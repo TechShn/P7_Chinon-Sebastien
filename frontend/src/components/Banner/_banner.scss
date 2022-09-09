@@ -1,9 +1,9 @@
 .block-banner {
     box-sizing: border-box;
     display: flex;
-    color: maroon;
-    background-color: yellow;
-    border: 3px solid black;
+    color: white;
+    background-color: maroon;
+    border: 1px solid maroon;
     border-radius: 10px;
     height: 150px;
     width: 100%;
@@ -25,7 +25,8 @@
 .banner-logo {
     height: 100%;
     width: 15%;
-    border: 1px solid black;
+    object-fit: cover;
+    border: 1px solid maroon;
 }
 
 @media screen and (max-width: 767px) {
