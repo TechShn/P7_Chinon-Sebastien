@@ -1,6 +1,10 @@
-import "../App.scss"
-import Identidication from "../pages/Identification"
-import Home from "../pages/Home"
+import "../App.scss";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+//import Home from "./Home"
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Banner from "../components/Banner/Banner";
+//import Home from "./Home"
 
 
 //const member = "Sebastien Chinon"
@@ -8,8 +12,16 @@ import Home from "../pages/Home"
 function App() {
   
   return <div>
-    <Identidication />
-    <Home />
+    <BrowserRouter>
+      <Banner />
+      <Routes >
+        <Route path="/" />
+        <Route path="auth/signin"  element={<SignIn />} />
+        <Route path="auth/signup"  element={<SignUp />} />
+        {/*<Route path="acceuil"  element={<Home />} />*/}
+
+      </Routes>
+    </BrowserRouter>
   </div>
 }
 

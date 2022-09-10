@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 import logo from '../../assets/logo_Groupomania_3.png';
 
 const InputConnectHooks = (props) => {
@@ -52,7 +53,7 @@ const InputConnectHooks = (props) => {
                     </div>
 
                     <div className='block-submitConect'>
-                            <input  type="submit" id="ConnexionID" name="Connexion" value="Connexion"/>
+                            <Link to="acceuil"><input  type="submit" id="ConnexionID" name="Connexion" value="Connexion"/></Link>
                             <h4> {console.log(submit)}</h4>
 
                         

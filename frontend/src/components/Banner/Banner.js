@@ -1,5 +1,6 @@
 import logo from '../../assets/logo.png';
-import ToogleBtn from '../ToogleBtn/toogleBtn';
+import { Link } from "react-router-dom";
+//import ToogleBtn from '../ToogleBtn/toogleBtn';
 
 
 function Banner(props) {
@@ -10,10 +11,9 @@ function Banner(props) {
         <img src={logo} alt="Logo groupomania" className='banner-logo' />
         <h1 className='banner-title'>{text.toUpperCase()}</h1>
         <ul>
-            <li>sign in</li>
-            <li>sign up</li>
+            <Link to="auth/signin"><li>sign in</li></Link>
+            <Link to="auth/signup"><li>sign up</li></Link>
         </ul>
-        <ToogleBtn />
         
     </div>
 
