@@ -5,7 +5,7 @@ import Footer from "../components/Footer/Footer"
 const Identification = () => {
     return(
         <div className="page">
-            <InputConnectHooks title="Connectez Vous !"/>
+            <InputConnectHooks title="Connectez Vous !" fetch="login"/>
             <Footer />
         </div>
     )

@@ -73,6 +73,32 @@
     };
 }
 
+#ConnexionIDInactif {
+    height: 50px;
+    width: 200px;
+    font-weight: 700;
+    color: white;
+    background-color: gray;
+    border: 2px solid gray;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+#ConnexionID {
+    height: 50px;
+    width: 200px;
+    font-weight: 700;
+    color: white;
+    background-color: maroon;
+    border: 2px solid gray;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.block-submitConectInactif {
+    background-color: grey;
+}
+
 .msg-ErrorEmail {
     
     width: 200px;
@@ -83,8 +109,13 @@
 
 .msg-ErrorPassword {
     
+
     width: 200px;
     color: red;
     font-size: medium;
     overflow: hidden;
+}
+
+.msg-ErrorDisplay {
+    display: none;
 }
