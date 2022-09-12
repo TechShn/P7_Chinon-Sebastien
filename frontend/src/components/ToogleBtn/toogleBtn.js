@@ -8,24 +8,36 @@ class toogleBtn extends Component {
         super(props)
         this.state = {
             isCartOn:  true,
+            isCartOff:  true,
         }
 
-        this.activeCart = this.activeCart.bind(this)
+        this.activeCartOn = this.activeCartOn.bind(this);
+        this.activeCartOff = this.activeCartOff.bind(this)
     }
-    activeCart() {
+
+    activeCartOn() {
         this.setState((prevState) => ({
             isCartOn: !prevState.isCartOn
         }))
     }
+
+    activeCartOff() {
+        this.setState((prevState) => ({
+            isCartOff: !prevState.isCartOff
+        }))
+    }
+
     render() {
         console.log();
         return (
-            <div>
-                <button className='lol' onClick={this.activeCart}>
-                    {this.state.isCartOn ? 'ON' : 'OFF'}
-                    {this.state.isCartOn ?  <p><FontAwesomeIcon icon={faThumbsUp} /></p> :  <p><FontAwesomeIcon icon={faThumbsDown} /></p>} 
-                    {console.log(this)}
-                </button>
+            <div className='block-Thumbs'>
+                <div onClick={this.activeCartOn}>
+                    {!this.state.isCartOn ?  <p className='iconThumbsUp'><FontAwesomeIcon icon={faThumbsUp} /></p> :  <p><FontAwesomeIcon icon={faThumbsUp} /></p>} 
+                </div>
+
+                <div onClick={this.activeCartOff}>
+                    {!this.state.isCartOff ?  <p className='iconThumbsDown'><FontAwesomeIcon icon={faThumbsDown} /></p> :  <p><FontAwesomeIcon icon={faThumbsDown} /></p>} 
+                </div>
             </div>
         );
     }

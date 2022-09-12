@@ -7,6 +7,7 @@ const path = require('path');
 
 
 const userRoutes = require('./routes/user-route');
+const SocialPostRoutes = require('./routes/socialPost-route')
 
 
 const app = express();
@@ -33,6 +34,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 
 app.use('/api/auth', userRoutes);
+app.use('/api/socialPost' , SocialPostRoutes);
 
 
 

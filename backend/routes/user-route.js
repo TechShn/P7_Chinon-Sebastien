@@ -7,7 +7,7 @@ const userCtrl = require('../controllers/user-controllers')
 
 // Route user
 router.post('/signup', userCtrl.signup );
-router.get('/signup', userCtrl.test);
+router.get('/signup', userCtrl.getTest);
 router.post('/login', userCtrl.login );
 
 

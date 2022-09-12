@@ -19,7 +19,7 @@ exports.signup = (req, res, next) => {
 }
 
 
-exports.test = (req ,res , next) => {
+exports.getTest = (req ,res , next) => {
   const stuff = [
     {
       _id: 'oeihfzeoi',

@@ -1,18 +1,37 @@
 .block-newsfeed {
-    height: 790px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     background-color: lightgreen;
     border: 2px solid black;
     margin-top: 20px;
 }
 
-.blockNewsFeed {
-    height: 50px;
-    width: 90%;
-    border: 2px solid black;
+.block-Post {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 95%;
+    border: 10px solid maroon;
+    border-radius: 10px;
     background-color: white;
-    margin: 5%;
+    margin: 20px;
 }
+
+.info {
+}
+
+.post {
+    text-align: center;
+}
+
+.socialBtn {
+    display: flex;
+    justify-content: center;
+}
+
 
 @media screen and (max-width: 767px) {
     .lmj-banner {

@@ -1,0 +1,17 @@
+.block-Thumbs {
+    width: 70px;
+    display: flex;
+    justify-content: flex-end;
+    & > div {
+        margin: 5px;
+    }
+}
+
+
+.iconThumbsUp {
+    color: green;
+}
+
+.iconThumbsDown {
+    color: red;
+}

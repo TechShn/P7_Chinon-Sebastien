@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 //import ReactDOM from 'react-dom/client';
 //import { createRoot } from 'react-dom/client';
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logo from '../../assets/logo_Groupomania_3.png';
 
 const InputConnectHooks = (props) => {
@@ -9,6 +9,7 @@ const InputConnectHooks = (props) => {
     const [password, setPassword] = useState("")
     const [errMsg, setErrMsg] = useState("")
     const [submit, setSubmit] = useState(<button  type="submit" id="ConnexionIDInactif" name="ConnexionID" value="Connexion">Connexion</button>)
+    const navigate = useNavigate();
 
 
     const regexEmail = /[^@]+@.+\.\w{2,3}$/.test(email);
@@ -54,9 +55,11 @@ const InputConnectHooks = (props) => {
         .then(function(res) {
             //console.log(res.status);
             if(res.status === 200) {
+                
+                navigate("/acceuil")
                 //console.log(res);
                 setErrMsg(<p className='msg-ErrorDisplay'></p>)
-                setSubmit(<Link to="acceuil">{submit}</Link>)
+                //setSubmit(<Link path="/" to="acceuil">{submit}</Link>)
             } else {
                 //const lol = document.getElementsByClassName('block-inputConect');
                // const lolo =  React.createElement('p' ,{ className: 'brown'} , 'My first React code')
