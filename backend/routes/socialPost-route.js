@@ -3,7 +3,8 @@ const router = express.Router();
 
 const socialPostCtrl = require('../controllers/socialPost-controllers');
 
-router.get('/', socialPostCtrl.getTest);
-router.post('/', socialPostCtrl.getAllSocialPost)
+//router.get('/', socialPostCtrl.getTest);
+router.get('/', socialPostCtrl.GetAllSocialPost);
+router.post('/', socialPostCtrl.CreateSocialPost);
 
 module.exports = router;

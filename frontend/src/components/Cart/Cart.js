@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+//import InputConect from '../Auth/InputConect';
 import Horloge from '../Horloge/Horloge';
 
 

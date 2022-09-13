@@ -69,7 +69,7 @@ const InputConnectHooks = (props) => {
             }
         })
         .catch(function(error) {
-            console.log('Impossible de récuprer la liste');
+            console.log('error');
         })
     }
 
