@@ -1,36 +1,7 @@
 const SocialPost = require("../models/socialPost-model")
 
 exports.getTest = (req ,res , next) => {
-    const stuff = [
-      {
-        _id: 'Sebastien',
-        name: 'Mon premier objet',
-        text: 'Les infos de mon premier objet',
-        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-        price: 4900,
-        userId: 'qsomihvqios',
-      },
-      {
-        _id: 'Anthony',
-        name: 'Mon deuxième objet',
-        text: 'Les infos de mon deuxième objet',
-        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-        price: 2900,
-        userId: 'qsomihvqios',
-      },
-      {
-        _id: 'nono',
-        name: 'Mon troisieme objet',
-        text: "Twitter est un réseau social de microblogage géré par l'entreprise Twitter Inc. Il permet à un utilisateur d’envoyer gratuitement des micromessages, appelés tweets ou gazouillis, sur internet, par messagerie instantanée ou par SMS. Ces messages sont limités à 280 caractères",
-        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-        price: 2900,
-        userId: 'qsomihvqios',
-      },
-      {
-        name: 'Mon quatrieme objet',
-        text: 'Les infos de mon deuxième objet',
-      },
-    ];
+    res.send('Je suis le test')
     res.status(200).json(stuff);
   }
 
@@ -41,7 +12,7 @@ exports.GetAllSocialPost = (req, res, next) => {
     })
     .catch((error) => {
       res.status(404).json({
-        error: error,
+        message: error,
       });
     });
 }
@@ -50,9 +21,43 @@ exports.CreateSocialPost = (req, res, next) => {
   console.log(req.body);
   const socialPost = new SocialPost({
     ...req.body,
-    name: Date(),
+    userId: req.body.userId,
+    name: "Sebastien",
+    date: new Date().toLocaleDateString('it-IT') + ' ' + new Date().toLocaleTimeString('it-IT'),
   })
+  console.log(socialPost);
   socialPost.save()
-  .then(() => res.status(201).json({ message: "Post enregistré !" }))
+  .then(() => res.status(201).json(socialPost))
   .catch((error) => res.status(400).json({ error }))
+}
+
+exports.modifySocialPost = (req, res, next) => {
+  SocialPost.findOne({_id: req.params.id})
+    .then((socialPost) => {
+      if (socialPost.userId /*=== req.auth.userId || req.auth.isAdmin === true*/) {
+        SocialPost.updateOne({_id: req.params.id} ,{$set: req.body})
+        .then(() => { res.status(200).json({ message: 'Objet modifié' }) })
+        .catch(error => res.status(400).json({ error }))
+      } else {
+        res.status(400).json({ message: 'Not authorized' });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+}
+
+
+exports.DeleteSocialPost = (req, res, next) => {
+  SocialPost.findOne({_id: req.params.id})
+    .then((socialPost) => {
+      console.log(req.auth)
+      if (socialPost.userId === req.auth.userId || req.auth.isAdmin === true) {
+        SocialPost.deleteOne({ _id: req.params.id })
+        .then(() => {res.status(200).json({ message: "Post supprimé"})})
+        .catch((error) => res.status(400).json({ error }));
+      } else {
+        res.status(401).json({ message: 'Not authorized' });
+      }})
+    .catch((error) => res.status(400).json({ error }))
 }

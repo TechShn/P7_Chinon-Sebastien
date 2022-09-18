@@ -7,7 +7,7 @@ import Banner from "../components/Banner/Banner";
 import Home from "./Home"
 
 
-//const member = "Sebastien Chinon"
+
 
 function App() {
   return <div>
@@ -16,7 +16,8 @@ function App() {
         <Route path="/"  element={<Banner />}/>
         <Route path="/auth/signin"  element={<SignIn />} />
         <Route path="/auth/signup"  element={<SignUp />} />
-        <Route path="/acceuil"  element={<Home />} />
+        <Route path="/acceuil"  element={<Home  option="postBtnDisplay"/>} />
+        <Route path="/acceuil/:id"  element={<Home option="postBtnDisplay" />} />
       </Routes>
     </BrowserRouter>
   </div>

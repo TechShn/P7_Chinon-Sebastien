@@ -9,7 +9,7 @@ function Banner(props) {
 function handleClick1() {
     navigate("/auth/signin")
 }
-function handleClick2(eent) {
+function handleClick2() {
     navigate("/auth/signup")
 }
 

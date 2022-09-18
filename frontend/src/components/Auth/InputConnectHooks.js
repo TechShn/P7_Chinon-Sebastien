@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 //import { createRoot } from 'react-dom/client';
 import { useNavigate } from "react-router-dom";
 import logo from '../../assets/logo_Groupomania_3.png';
+import jwt_decode from "jwt-decode";
+
 
 const InputConnectHooks = (props) => {
     const [email, setEmail] = useState("")
@@ -17,10 +19,6 @@ const InputConnectHooks = (props) => {
 
     
     function handleChangeEmail(event) {
-        
-        //const regexEmail = /[^@]+@.+\.\w{2,3}$/.test(event.target.value);
-        //const msgErrorEmail = document.getElementsByClassName('msg-ErrorEmail')
-        //const doto = document.getElementById('emailID')
         setEmail(event.target.value)
         setErrMsg(regexEmail ? "" : <p className='msg-ErrorEmail'>Adresse e-mail non valide</p>)
         setSubmit(regexEmail && regexPassword ? <button  type="submit" id="ConnexionID" name="ConnexionID" value="Connexion">Connexion</button>
@@ -33,7 +31,6 @@ const InputConnectHooks = (props) => {
         setErrMsg(regexPassword ? "" : <p className='msg-ErrorEmail'>Mots de passe non valide</p>)
         setSubmit(regexEmail && regexPassword ? <button  type="submit" id="ConnexionID" name="ConnexionID" value="Connexion">Connexion</button>
          : <button  type="submit" id="ConnexionIDInactif" name="ConnexionID" value="Connexion">Connexion</button>)
-        //setSubmit({email, password}) 
     }
 
 
@@ -51,25 +48,27 @@ const InputConnectHooks = (props) => {
             body: JSON.stringify(data)
             }
         )
-        .then(res => res)
+        .then(res => res.json())
         .then(function(res) {
-            //console.log(res.status);
-            if(res.status === 200) {
+            console.log(res);
+            if(res) {
+                //console.log(res.token);
+                const decodedToken = jwt_decode(res.token)
+                sessionStorage.setItem('user', JSON.stringify({userId: decodedToken.userId, isAdmin: decodedToken.isAdmin, token: res.token}));
+                console.log(decodedToken);
+        
                 
-                navigate("/acceuil")
-                //console.log(res);
+        
+                
                 setErrMsg(<p className='msg-ErrorDisplay'></p>)
-                //setSubmit(<Link path="/" to="acceuil">{submit}</Link>)
+                navigate(`/acceuil`);
             } else {
-                //const lol = document.getElementsByClassName('block-inputConect');
-               // const lolo =  React.createElement('p' ,{ className: 'brown'} , 'My first React code')
-                
-               // const container = document.getElementsByClassName('block-inputConect')
                 setErrMsg(<p className='msg-ErrorEmail'>Erreur server :500  Paire login/mot de passe incorrecte</p>)
-            }
+            };
         })
         .catch(function(error) {
-            console.log('error');
+            console.log('error')
+            setErrMsg(<p className='msg-ErrorEmail'>Erreur server :500  Paire login/mot de passe incorrecte</p>);
         })
     }
 
@@ -82,20 +81,16 @@ const InputConnectHooks = (props) => {
                     <div className='block-email'>
                         <label htmlFor="email"></label>
                         <input type="email" id="emailID" name="email" placeholder=' Adresse e-mail' value={email} onChange={handleChangeEmail} onBlur={handleChangeEmail} required/>
-                        {/*regexEmail ? "" : <p className='msg-ErrorEmail'>Adresse e-mail non valide</p>*/}
                     </div>
 
                     <div className='block-password'>
                         <label htmlFor="password"></label>
                         <input type="password" id="passwordID" name="password" placeholder='Mots de passe' value={password} onChange={handleChangePassword} onBlur={handleChangePassword} required/>
-                            {/*regexPassword ? "" : <p className='msg-ErrorPassword'>Mots de passe invalide, (une majuscule, une minuscule et un chiffre requie)</p>*/}
                             {errMsg}
                     </div>
 
                     <div className='block-submitConect'>
-                            {/*<Link to="acceuil">*/}{submit}{/*</Link>*/}
-
-                        
+                            {submit}
                     </div>
                 </form>
             </div>

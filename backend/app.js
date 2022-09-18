@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-//require('dotenv').config();
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 
 
@@ -13,7 +15,7 @@ const SocialPostRoutes = require('./routes/socialPost-route')
 const app = express();
 
 // Fonction permettant de se connecter à une base de donnée
-mongoose.connect("mongodb+srv://TechShn_P6:53525770@cluster0.l4zrhit.mongodb.net/?retryWrites=true&w=majority",
+mongoose.connect(process.env.MONGODB_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))

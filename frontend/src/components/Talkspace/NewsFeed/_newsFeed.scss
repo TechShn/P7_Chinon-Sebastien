@@ -4,8 +4,9 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    background-color: lightgreen;
+    background-color: lightgrey;
     border: 2px solid black;
+    border-radius: 20px;
     margin-top: 20px;
 }
 
@@ -21,9 +22,24 @@
 }
 
 .info {
+    width: 100px;
+    color: white;
+    background-color: maroon;
+    border-bottom-right-radius: 15px ;
+    & .name{
+        height: 35px;
+        font-size: large;
+        font-weight: 900;
+    }
 }
 
 .post {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    font-size: 20px;
+    font-weight: 800;
     text-align: center;
 }
 
@@ -32,6 +48,29 @@
     justify-content: center;
 }
 
+
+
+.blockPostBtn {
+    background-color: maroon;
+    & p{
+        margin-right: 15px;
+        font-weight: 900;
+        color: white;
+        margin-top: 5px;
+    }
+}
+
+.postBtn {
+    display: flex;
+}
+
+.blockModify {
+    display: flex;
+}
+
+.blockModifyDisplay {
+    display: none;
+}
 
 @media screen and (max-width: 767px) {
     .lmj-banner {

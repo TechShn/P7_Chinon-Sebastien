@@ -3,12 +3,21 @@ import Footer from "../components/Footer/Footer";
 import Cart from "../components/Cart/Cart";
 import Talkspace from "../components/Talkspace/TalkSpace"
 import { useNavigate } from "react-router-dom";
+//import { useState } from "react";
 
-const Home = () => {
+const Home = (props) => {
     const logout = (<button onClick={handleClick}>logout</button>)
     const navigate = useNavigate();
 
+    //const str = window.location;
+    //const url = new URL(str);
+    //const tokenUrl = url.searchParams.get('token')
+    //console.log(tokenUrl);
+
+   // const [token, setToken] = useState(tokenUrl)
+
     function handleClick() {
+        sessionStorage.removeItem('user')
         navigate('/')
     }
 
@@ -16,7 +25,7 @@ const Home = () => {
         <div className="page">
             <Banner list='logout' logout={logout}/>
             <Cart />
-            <Talkspace />
+            <Talkspace option={props.option}/>
             <Footer />
         </div>
     )

@@ -1,26 +1,155 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ToogleBtn from '../../ToogleBtn/ToogleBtn';
+//import jwt_decode from "jwt-decode";
+
+/*const str = window.location;
+const url = new URL(str);
+const tokenUrl = url.pathname
+const lastItem = tokenUrl.substring(tokenUrl.lastIndexOf('/') + 1)*/
+//console.log(lastItem);
+
+
+
+
+let user = JSON.parse(sessionStorage.getItem("user"));
+//console.log(user);
+
+
+
+
 
 
 function NewsFeed(props) {
+    const [socialPost, setSocialPost] = useState([]);
+    const [textPost, setTextPost] = useState("lol");
+    const [blockModify, setBlockModify] = useState('blockModifyDisplay')
+    /*const [Modify, setModify] = useState(
+    <div className='blockModifyDisplay'>
+        <textarea className='inputModifyDisplay' rows="2" cols="121" placeholder="Modifie ton post"></textarea>
+        <button>Valider</button>
+    </div>
+    )*/
+    //const [blockBtn, setBlockBtn] = useState(<div className={props.option}><div className='socialBtnDisplay'><ToogleBtn /></div></div>)
+    const navigate = useNavigate();
+    //console.log(props.option);
+    const isAdmin = user.isAdmin;
 
-    const [socialPost, setSocialPost] = useState([])
 
-    useEffect(() => {
-        fetch('http://localhost:4200/api/socialPost')
+
+    function handleClickPost(event) {
+        //console.log(event.target);
+        navigate(`/acceuil/${event.target.dataset.id}`);
+
+        //event.target.children[2].className = "postBtn"
+        /*if(ptdr === true) {
+            event.target.children[3].className = "postBtn"
+        }
+        console.log(event);*/
+    }
+
+    function handleClickModify(event) {
+        setBlockModify('blockModify')
+        
+    }
+
+    function handleModifChange(event){
+        setTextPost(event.target.value);
+        console.log(textPost);
+    }
+
+    function handleClickValide(event){
+        const str = window.location;
+        const url = new URL(str);
+        const tokenUrl = url.pathname
+        const id = tokenUrl.substring(tokenUrl.lastIndexOf('/') + 1)
+
+        
+
+        const dataModif = {
+            textPost
+        }
+        console.log(dataModif);
+
+        fetch(`http://localhost:4200/api/socialPost/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+            body: JSON.stringify(dataModif)
+            }
+        )
+        .then(res => res.json())
+        .then(function(res) {
+        
+        })
+        .catch(function(error) {
+        })
+    }
+        
+
+
+    function handleClickDelete() {
+        const str = window.location;
+        const url = new URL(str);
+        const tokenUrl = url.pathname
+        const id = tokenUrl.substring(tokenUrl.lastIndexOf('/') + 1)
+
+
+
+        fetch(`http://localhost:4200/api/socialPost/${id}`,{
+        method: "DELETE",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+            }})
             .then(res => res.json())
-            .then(res => setSocialPost(res))
-      }, []);
+            .then(res => {
+                console.log(res);
+            })
+            .catch((res) => res.status(400).json(res))
+    }
+    
+
+    
+    useEffect(() => {
+        fetch('http://localhost:4200/api/socialPost', 
+        {headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+        }})
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                setSocialPost(res)}
+                )}, []);
 
    return (
 
    <div className="block-newsfeed">
         <h2>Fil d'Actualité</h2>
         {socialPost.map(post => 
-            <div className='block-Post' key={post.name}>
-                <div className='info'>{post.name}</div>
-                <div className='post'>{post.textPost}</div>
-                <div className='socialBtn'><ToogleBtn /></div>
+            <div onClick={handleClickPost} className='block-Post' key={post._id} data-id={post._id}>
+                <div  className='info' data-id={post._id}><p className='name'>{post.name}</p></div>
+                <div className='post' data-id={post._id}>{post.textPost}</div>
+                <div className="block-like" ><div className='socialBtn' data-id={post._id}><ToogleBtn /></div>{post.date}</div>
+                
+                
+                {(isAdmin || user.userId === post.userId ) ? <div className={'blockPostBtn'}>
+                    <div className='postBtn'>
+                        <p data-id={post._id} onClick={handleClickDelete}>Supprimez</p>
+                        <p onClick={handleClickModify}>Modifier</p>
+                    </div>
+                    <div className={blockModify}>
+                        <textarea data-id={post._id} className='inputModifyDisplay' rows="2" cols="121" placeholder="Modifie ton post" onChange={handleModifChange}></textarea>
+                        <button data-id={post._id} onClick={handleClickValide}>Valider</button>
+                    </div>
+                </div> : "" }
+                {/*console.log(post.userId === user.userId)*/}
             </div>
         )}
     </div>
@@ -28,27 +157,3 @@ function NewsFeed(props) {
 }
 
 export default NewsFeed
-
-
-
-
-    /*fetch('http://localhost:4200/api/socialPost')
-            .then(function(res) {
-                if (res.ok) {
-                    return res.json();
-                }
-            })
-            .then(function(posts) {
-                posts.forEach(post => {
-                    //console.log(post);
-                    const lol = React.createElement('div' ,{ className: 'block-Post', key: post.name} , 
-                        React.createElement('div', {className: "info"}, post.name),
-                        React.createElement('div', {className: "post"}, post.textPost),
-                        React.createElement('div', {className: "socialBtn"}, <ToogleBtn />)
-                    )
-                    console.log();
-                });
-            })
-            .catch(function(error) {
-                console.error("Impossible de récuper la liste des produits depuis l'API", error)
-            })*/

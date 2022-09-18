@@ -1,36 +1,48 @@
 import React, {useState} from 'react';
 
+/*const str = window.location;
+const url = new URL(str);
+const token = url.searchParams.get('token')*/
+//console.log(token);
+
+let user = JSON.parse(sessionStorage.getItem('user'))
+//console.log(key);
+
 function TalkField(props) {
-    const [textPost, setTextPost] = useState("")
-    console.log(textPost);
+    const [textPost, setTextPost] = useState("");
+    //const [userId, setUserId] = useState('')
+    //console.log(userId);
 
 
 
     function handleChange(event) {
         setTextPost(event.target.value)
-        console.log(event.target.value);
 
     }
 
 
     function InitSocialPost() {
         const dataField = {
-            textPost
+            textPost,
+            userId: user.userId
         }
 
-        console.log(dataField);
 
         fetch('http://localhost:4200/api/socialPost', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             },
             body: JSON.stringify(dataField)
             }
         )
-        .then(res => res)
+        .then(res => res.json())
         .then(function(res) {
+            console.log(res._id);
+            //setUserId(res._id)
+            console.log(dataField);
         })
         .catch(function(error) {
         })
@@ -40,6 +52,7 @@ function TalkField(props) {
 
     function addAnImage() {
         alert("C'est gagné")
+        localStorage.setItem('name', 'sebastien')
     }
 
 

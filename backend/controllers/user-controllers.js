@@ -8,7 +8,8 @@ exports.signup = (req, res, next) => {
     .then(hash => {
       const user = new User({
         email: req.body.email,
-        password: hash
+        password: hash,
+        isAdmin: false
       });
       console.log(req.body.email);
       user.save()
@@ -20,24 +21,7 @@ exports.signup = (req, res, next) => {
 
 
 exports.getTest = (req ,res , next) => {
-  const stuff = [
-    {
-      _id: 'oeihfzeoi',
-      title: 'Mon premier objet',
-      description: 'Les infos de mon premier objet',
-      imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-      price: 4900,
-      userId: 'qsomihvqios',
-    },
-    {
-      _id: 'oeihfzeomoihi',
-      title: 'Mon deuxième objet',
-      description: 'Les infos de mon deuxième objet',
-      imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-      price: 2900,
-      userId: 'qsomihvqios',
-    },
-  ];
+  res.send('Je suis le test signup')
   res.status(200).json(stuff);
 }
 
@@ -56,11 +40,13 @@ exports.login = (req, res, next) => {
           res.status(200).json({
             userId: user._id,
             token: jwt.sign(
-              { userId: user._id},
+              { userId: user._id,
+                isAdmin: user.isAdmin},
               'RANDOM_TOKEN_SECRET',
               { expiresIn: '24h' }
             )
           });
+          console.log(user);
         })
         .catch(error => res.status(500).json({ error }));
     })
