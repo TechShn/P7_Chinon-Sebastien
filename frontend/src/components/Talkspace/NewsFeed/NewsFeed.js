@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ToogleBtn from '../../ToogleBtn/ToogleBtn';
+//import ToogleBtn from '../../ToogleBtn/ToogleBtn';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faThumbsUp} from '@fortawesome/free-solid-svg-icons';
 //import jwt_decode from "jwt-decode";
 
 /*const str = window.location;
@@ -22,8 +24,9 @@ let user = JSON.parse(sessionStorage.getItem("user"));
 
 function NewsFeed(props) {
     const [socialPost, setSocialPost] = useState([]);
-    const [textPost, setTextPost] = useState("lol");
+    const [textPost, setTextPost] = useState("");
     const [blockModify, setBlockModify] = useState('blockModifyDisplay')
+    const [like, setLike] = useState(false)
     /*const [Modify, setModify] = useState(
     <div className='blockModifyDisplay'>
         <textarea className='inputModifyDisplay' rows="2" cols="121" placeholder="Modifie ton post"></textarea>
@@ -46,6 +49,45 @@ function NewsFeed(props) {
             event.target.children[3].className = "postBtn"
         }
         console.log(event);*/
+    }
+
+    function handleClickLike() {
+        const str = window.location;
+        const url = new URL(str);
+        const tokenUrl = url.pathname
+        const id = tokenUrl.substring(tokenUrl.lastIndexOf('/') + 1)
+
+        setLike(!like)
+        console.log(like);
+
+        const dataLike = {
+            like: like,
+            userId: user.userId
+        }
+
+        fetch(`http://localhost:4200/api/socialPost/${id}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+            body: JSON.stringify(dataLike)
+            }
+        )
+        .then(res => res.json())
+        .then(function(res) {
+            /*if ( res.userLiked.includes(user.userId)) {
+                console.log('sisi');
+                return setLike(true);
+            } else {
+                console.log('nono');
+                return setLike(false);
+            }*/
+
+        })
+        .catch(function(error) {
+        })
     }
 
     function handleClickModify(event) {
@@ -125,7 +167,8 @@ function NewsFeed(props) {
             .then(res => res.json())
             .then(res => {
                 console.log(res)
-                setSocialPost(res)}
+                setSocialPost(res)
+            }
                 )}, []);
 
    return (
@@ -136,7 +179,16 @@ function NewsFeed(props) {
             <div onClick={handleClickPost} className='block-Post' key={post._id} data-id={post._id}>
                 <div  className='info' data-id={post._id}><p className='name'>{post.name}</p></div>
                 <div className='post' data-id={post._id}>{post.textPost}</div>
-                <div className="block-like" ><div className='socialBtn' data-id={post._id}><ToogleBtn /></div>{post.date}</div>
+                <div className="block-like" >
+                    <div onClick={handleClickLike} className='socialBtn' data-id={post._id}>
+                        <div>
+                            {post.userLiked.includes(user.userId) ?  
+                            <p  className='iconThumbsUp'><FontAwesomeIcon icon={faThumbsUp} /></p>
+                            :  <p><FontAwesomeIcon icon={faThumbsUp} /></p>} 
+                        </div>
+                        <div></div>
+                    </div>{post.date}
+                </div>
                 
                 
                 {(isAdmin || user.userId === post.userId ) ? <div className={'blockPostBtn'}>

@@ -61,3 +61,26 @@ exports.DeleteSocialPost = (req, res, next) => {
       }})
     .catch((error) => res.status(400).json({ error }))
 }
+
+exports.socialPostLike = (req, res, next) => {
+  SocialPost.findOne({_id: req.params.id})
+    .then((socialPost) => {
+      if (!socialPost.userLiked.includes(req.body.userId) && req.body.like === true) {
+        console.log('post liked');
+        SocialPost.updateOne({ _id: req.params.id }, { $inc: {like: 1}, $push: {userLiked: req.body.userId} })
+        .then(() => res.status(200).json())
+        .catch(error => res.status(400).json({ error }))
+      }
+
+      if (socialPost.userLiked.includes(req.body.userId) && req.body.like === false) {
+        console.log('post unliked');
+        SocialPost.updateOne({_id: req.params.id}, { $inc: {like: -1}, $pull: {userLiked: req.body.userId} })
+        .then(() => res.status(200).json())
+        .catch(error => res.status(400).json({ error }))
+      }
+      res.status(200).json(socialPost)
+
+
+    })
+    .catch((error) => res.status(401).json({error}))
+}

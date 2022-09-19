@@ -4,6 +4,8 @@ import {faThumbsUp, faThumbsDown} from '@fortawesome/free-solid-svg-icons';
 //import Cart from "./Cart/Cart";
 
 class toogleBtn extends Component {
+
+
     constructor(props) {
         super(props)
         this.state = {
@@ -16,10 +18,15 @@ class toogleBtn extends Component {
     }
 
     activeCartOn() {
+        
         this.setState((prevState) => ({
             isCartOn: !prevState.isCartOn
         }))
+        console.log(this.state.isCartOn);
+
     }
+
+    
 
     activeCartOff() {
         this.setState((prevState) => ({
@@ -32,7 +39,9 @@ class toogleBtn extends Component {
         return (
             <div className='block-Thumbs'>
                 <div onClick={this.activeCartOn}>
-                    {!this.state.isCartOn ?  <p className='iconThumbsUp'><FontAwesomeIcon icon={faThumbsUp} /></p> :  <p><FontAwesomeIcon icon={faThumbsUp} /></p>} 
+                    {!this.state.isCartOn ?  
+                        <p className='iconThumbsUp'><FontAwesomeIcon icon={faThumbsUp} /></p>
+                         :  <p><FontAwesomeIcon icon={faThumbsUp} /></p>} 
                 </div>
 
                 <div onClick={this.activeCartOff}>
