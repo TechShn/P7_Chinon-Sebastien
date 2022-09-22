@@ -9,11 +9,22 @@ exports.signup = (req, res, next) => {
       const user = new User({
         email: req.body.email,
         password: hash,
+        userName: req.body.name,
         isAdmin: false
       });
-      console.log(req.body.email);
+      res.status(200).json({
+        userId: user._id,
+        token: jwt.sign(
+          { userId: user._id,
+            userName: user.userName,
+            isAdmin: user.isAdmin},
+          'RANDOM_TOKEN_SECRET',
+          { expiresIn: '24h' }
+        )
+      });
+      console.log(user);
       user.save()
-        .then(() => { res.status(200).json({ message: 'Compte créer' }) })
+        .then()
         .catch(error => res.status(500).json({ error }));
     })
     .catch(error => res.status(500).json({ error }))
@@ -41,6 +52,7 @@ exports.login = (req, res, next) => {
             userId: user._id,
             token: jwt.sign(
               { userId: user._id,
+                userName: user.userName,
                 isAdmin: user.isAdmin},
               'RANDOM_TOKEN_SECRET',
               { expiresIn: '24h' }

@@ -10,6 +10,7 @@ const InputConnectHooks = (props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errMsg, setErrMsg] = useState("")
+    const name = props.name
     const [submit, setSubmit] = useState(<button  type="submit" id="ConnexionIDInactif" name="ConnexionID" value="Connexion">Connexion</button>)
     const navigate = useNavigate();
 
@@ -37,7 +38,9 @@ const InputConnectHooks = (props) => {
     function handleChangeSubmit(event) {
         event.preventDefault()
         const data = {
-            email, password
+            email,
+            password,
+            name
         }
         fetch('http://localhost:4200/api/auth/' + props.fetch, {
             method: 'POST',
@@ -51,10 +54,9 @@ const InputConnectHooks = (props) => {
         .then(res => res.json())
         .then(function(res) {
             console.log(res);
-            if(res) {
                 //console.log(res.token);
                 const decodedToken = jwt_decode(res.token)
-                sessionStorage.setItem('user', JSON.stringify({userId: decodedToken.userId, isAdmin: decodedToken.isAdmin, token: res.token}));
+                sessionStorage.setItem('user', JSON.stringify({userId: decodedToken.userId, isAdmin: decodedToken.isAdmin , userName: decodedToken.userName, token: res.token}));
                 console.log(decodedToken);
         
                 
@@ -62,9 +64,7 @@ const InputConnectHooks = (props) => {
                 
                 setErrMsg(<p className='msg-ErrorDisplay'></p>)
                 navigate(`/acceuil`);
-            } else {
-                setErrMsg(<p className='msg-ErrorEmail'>Erreur server :500  Paire login/mot de passe incorrecte</p>)
-            };
+            
         })
         .catch(function(error) {
             console.log('error')
@@ -82,6 +82,8 @@ const InputConnectHooks = (props) => {
                         <label htmlFor="email"></label>
                         <input type="email" id="emailID" name="email" placeholder=' Adresse e-mail' value={email} onChange={handleChangeEmail} onBlur={handleChangeEmail} required/>
                     </div>
+
+                    {props.blockName}
 
                     <div className='block-password'>
                         <label htmlFor="password"></label>

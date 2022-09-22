@@ -6,8 +6,9 @@ const socialPostSchema = mongoose.Schema({
     name: {type: String},
     date: {type: String},
     isAdmin: {type: Boolean},
-    like: {type: Number, default: 0},
-    userLiked: [{type: String}]
+    like: { type: Number, default: 0},
+    userLiked: [{type: String}],
+    imageUrl: {type: String}
 })
 
 module.exports = mongoose.model('SocialPost', socialPostSchema);

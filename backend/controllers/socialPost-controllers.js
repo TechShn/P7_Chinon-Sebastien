@@ -6,7 +6,7 @@ exports.getTest = (req ,res , next) => {
   }
 
 exports.GetAllSocialPost = (req, res, next) => {
-  SocialPost.find()
+  SocialPost.find().sort({date: -1})
     .then((socialPost) => {
       res.status(200).json(socialPost);
     })
@@ -18,14 +18,16 @@ exports.GetAllSocialPost = (req, res, next) => {
 }
 
 exports.CreateSocialPost = (req, res, next) => {
-  console.log(req.body);
+  const socialPostObject = req.body
+  console.log(req);
   const socialPost = new SocialPost({
-    ...req.body,
+    ...socialPostObject,
     userId: req.body.userId,
-    name: "Sebastien",
+    name: req.body.userName,
     date: new Date().toLocaleDateString('it-IT') + ' ' + new Date().toLocaleTimeString('it-IT'),
+    //imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
   })
-  console.log(socialPost);
+  console.log(req);
   socialPost.save()
   .then(() => res.status(201).json(socialPost))
   .catch((error) => res.status(400).json({ error }))
