@@ -10,26 +10,36 @@ function NewsFeed(props) {
     const [socialPost, setSocialPost] = useState([]);
     const [textPost, setTextPost] = useState("");
     const [blockModify, setBlockModify] = useState('blockModifyDisplay')
-    const [like, setLike] = useState(true)
+    const [like, setLike] = useState(null)
     const navigate = useNavigate();
     const isAdmin = user.isAdmin;
 
 
 
-    function handleClickPost(event) {
+    function handleonMouseEnterPost(event) {
         navigate(`/acceuil/${event.target.dataset.id}`);
+        //const lol = event.target.children[3].children[0].children[0].children[0].className
+        //lol === 'iconThumbsUp' ? setLike(false) : setLike(true) 
     }
 
-    function handleClickLike() {
+    function handleMouseEnterLike(event) {
+        console.log(event.target.className);
+        const thumbsTrue = event.target.className;
+        thumbsTrue === 'fa-solid fa-thumbs-up' ? setLike(false) : setLike(true);
+    }
+
+
+
+    function handleClickLike(event) {
         const str = window.location;
         const url = new URL(str);
         const tokenUrl = url.pathname
         const id = tokenUrl.substring(tokenUrl.lastIndexOf('/') + 1)
 
-        socialPost.map((post) => console.log(post.userLiked.includes(user.userId)))
+
 
         setLike(!like)
-        //console.log(like);
+        console.log(like);
 
         const dataLike = {
             like: like,
@@ -141,7 +151,7 @@ function NewsFeed(props) {
    <div className="block-newsfeed">
         <h2>Fil d'Actualité</h2>
         {socialPost.map(post => 
-            <div onMouseEnter={handleClickPost} className='block-Post' key={post._id} data-id={post._id}>
+            <div onMouseEnter={handleonMouseEnterPost} className='block-Post' key={post._id} data-id={post._id}>
                 <div  className='info' data-id={post._id}><p className='name'>{post.name}</p></div>
                 <div className='post' data-id={post._id}>{post.textPost}</div>
                 <div className='blockImg' data-id={post._id}>
@@ -149,13 +159,13 @@ function NewsFeed(props) {
                 </div>
 
                 <div className="block-like" >
-                    <div onClick={handleClickLike} className='socialBtn' data-id={post._id}>
+                    <div onClick={handleClickLike}  className='socialBtn' data-id={post._id}>
                         <div>
                             {post.userLiked.includes(user.userId) ?  
-                            <p className='iconThumbsUp'><i data-id={post._id} className="fa-solid fa-thumbs-up"></i></p>
-                            :  <p><i data-id={post._id} className="fa-solid fa-thumbs-up"></i></p>} 
+                            <p className='iconThumbsUp'><i onMouseEnter={handleMouseEnterLike} data-id={post._id} className="fa-solid fa-thumbs-up"></i></p>
+                            :  <p><i onMouseEnter={handleMouseEnterLike} className="fa-regular fa-thumbs-up"></i></p>} 
                         </div>
-                        <div></div>
+                        <div>{post.like}</div>
                     </div>{post.date}
                 </div>
                 
