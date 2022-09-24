@@ -12,16 +12,7 @@ exports.signup = (req, res, next) => {
         userName: req.body.name,
         isAdmin: false
       });
-      res.status(200).json({
-        userId: user._id,
-        token: jwt.sign(
-          { userId: user._id,
-            userName: user.userName,
-            isAdmin: user.isAdmin},
-          'RANDOM_TOKEN_SECRET',
-          { expiresIn: '24h' }
-        )
-      });
+      //res.status(200).json({message: 'compte crée'});
       console.log(user);
       user.save()
         .then()

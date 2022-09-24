@@ -18,26 +18,35 @@ exports.GetAllSocialPost = (req, res, next) => {
 }
 
 exports.CreateSocialPost = (req, res, next) => {
-  const socialPostObject = req.body
-  console.log(req);
+  const data = req.file ? {
+      ...JSON.parse(req.body.dataField),
+      imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+  } : {...JSON.parse(req.body.dataField)}; /*JSON.parse(req.body.dataField)*/
+  //console.log(data);
   const socialPost = new SocialPost({
-    ...socialPostObject,
-    userId: req.body.userId,
-    name: req.body.userName,
+    ...data,
+    userId: data.userId,
+    name: data.userName,
     date: new Date().toLocaleDateString('it-IT') + ' ' + new Date().toLocaleTimeString('it-IT'),
     //imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
   })
-  console.log(req);
+  console.log(data);
   socialPost.save()
   .then(() => res.status(201).json(socialPost))
   .catch((error) => res.status(400).json({ error }))
 }
 
 exports.modifySocialPost = (req, res, next) => {
+  console.log(req.body);
+  const data = req.file ? {
+    ...JSON.parse(req.body.dataModif),
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+} : {...JSON.parse(req.body.dataModif)}
+
   SocialPost.findOne({_id: req.params.id})
     .then((socialPost) => {
       if (socialPost.userId /*=== req.auth.userId || req.auth.isAdmin === true*/) {
-        SocialPost.updateOne({_id: req.params.id} ,{$set: req.body})
+        SocialPost.updateOne({_id: req.params.id} ,{ ...data, _id: req.params.id })
         .then(() => { res.status(200).json({ message: 'Objet modifié' }) })
         .catch(error => res.status(400).json({ error }))
       } else {
@@ -53,7 +62,7 @@ exports.modifySocialPost = (req, res, next) => {
 exports.DeleteSocialPost = (req, res, next) => {
   SocialPost.findOne({_id: req.params.id})
     .then((socialPost) => {
-      console.log(req.auth)
+      //console.log(req.auth)
       if (socialPost.userId === req.auth.userId || req.auth.isAdmin === true) {
         SocialPost.deleteOne({ _id: req.params.id })
         .then(() => {res.status(200).json({ message: "Post supprimé"})})

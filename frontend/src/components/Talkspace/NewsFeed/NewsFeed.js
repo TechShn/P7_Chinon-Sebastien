@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+//import Img1 from "../../../images/Img1.jpg"
 
 
 let user = JSON.parse(sessionStorage.getItem("user"));
@@ -9,8 +10,9 @@ console.log(user);
 function NewsFeed(props) {
     const [socialPost, setSocialPost] = useState([]);
     const [textPost, setTextPost] = useState("");
-    const [blockModify, setBlockModify] = useState('blockModifyDisplay')
-    const [like, setLike] = useState(null)
+    //const [blockModify, setBlockModify] = useState('blockModifyDisplay')
+    const [like, setLike] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
     const navigate = useNavigate();
     const isAdmin = user.isAdmin;
 
@@ -65,12 +67,23 @@ function NewsFeed(props) {
     }
 
     function handleClickModify(event) {
-        setBlockModify('blockModify')
+        //setBlockModify('blockModify')
+        /*if(event.target !== event.currentTarget) {
+            return event.target.children[0].className = 'blockModify';
+        }*/
+        event.currentTarget.children[0].className = 'blockModify';
+        //console.log(event.currentTarget);
     }
 
     function handleModifChange(event){
         setTextPost(event.target.value);
         console.log(textPost);
+    }
+
+    function addAnImage(event) {
+        const file = event.target.files[0];
+        setImageUrl(file);
+        console.log(imageUrl);
     }
 
     function handleClickValide(event){
@@ -79,25 +92,32 @@ function NewsFeed(props) {
         const tokenUrl = url.pathname
         const id = tokenUrl.substring(tokenUrl.lastIndexOf('/') + 1)
 
+        const file = imageUrl
+        const formData = new FormData()
+
+        formData.append('image', file)
+
         const dataModif = {
             textPost
         }
-        console.log(dataModif);
+        const json = JSON.stringify(dataModif);
+
+        formData.append('dataModif', json) 
+        for (var p of formData) {
+            console.log(p);
+          }
 
         fetch(`http://localhost:4200/api/socialPost/${id}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
             },
-            body: JSON.stringify(dataModif)
+            body: formData
             }
         )
         .then(res => res.json())
-        .then(function(res) {
-        
-        })
+        .then((newSocialPost) => newSocialPost)
         .catch(function(error) {
         })
     }
@@ -125,6 +145,8 @@ function NewsFeed(props) {
             })
             .catch((res) => res.status(400).json(res))
     }
+
+    
 
     
     function initPost() {
@@ -155,7 +177,7 @@ function NewsFeed(props) {
                 <div  className='info' data-id={post._id}><p className='name'>{post.name}</p></div>
                 <div className='post' data-id={post._id}>{post.textPost}</div>
                 <div className='blockImg' data-id={post._id}>
-                {/*<img src={Img1} alt='sauce' className='Img' data-id={post._id} />*/}
+                {post.imageUrl && <img src={post.imageUrl} alt='sauce' className='Img' data-id={post._id} />}
                 </div>
 
                 <div className="block-like" >
@@ -173,13 +195,21 @@ function NewsFeed(props) {
                 {(isAdmin || user.userId === post.userId ) ? <div className={'blockPostBtn'}>
                     <div className='postBtn'>
                         <p data-id={post._id} onClick={handleClickDelete}>Supprimez</p>
-                        <p onClick={handleClickModify}>Modifier</p>
+                        <div onClick={handleClickModify}>
+                            Modifier
+                            <div className="blockModifyDisplay">
+                                <textarea data-id={post._id} className='inputModifyDisplay' rows="2" cols="121" placeholder="Modifie ton post" onChange={handleModifChange}></textarea>
+                                <div className='btnModif'>
+                                    <input type="file" data-id={post._id} onChange={addAnImage} />
+                                    <button data-id={post._id} onClick={handleClickValide}>Valider</button>
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
 
-                    <div className={blockModify}>
-                        <textarea data-id={post._id} className='inputModifyDisplay' rows="2" cols="121" placeholder="Modifie ton post" onChange={handleModifChange}></textarea>
-                        <button data-id={post._id} onClick={handleClickValide}>Valider</button>
-                    </div>
+                    
+                    
 
                 </div> : "" }
             </div>

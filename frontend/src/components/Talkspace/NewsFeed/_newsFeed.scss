@@ -76,14 +76,25 @@
 
 .postBtn {
     display: flex;
+    
 }
 
 .blockModify {
+    
     display: flex;
+    flex-direction: column;
+}
+
+
+
+.btnModif {
+    display: flex;
+    justify-content: space-between;
 }
 
 .blockModifyDisplay {
     display: none;
+    
 }
 
 @media screen and (max-width: 767px) {

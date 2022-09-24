@@ -25,7 +25,7 @@ function TalkField(props) {
         const formData = new FormData()
 
         formData.append('image', file)
-        //console.log(formData);
+              //console.log(formData);
         //console.log(file);
 
         /*for (var p of formData) {
@@ -38,23 +38,22 @@ function TalkField(props) {
             userId: user.userId,
             userName: user.userName
         }
-
-
+        const json = JSON.stringify(dataField);
+        
+        formData.append('dataField', json)  
 
         fetch('http://localhost:4200/api/socialPost', {
             method: 'POST',
-            //mode: 'no-cors',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`,
             },
-            body:  JSON.stringify(dataField)
+            body: formData
             }
         )
         .then(res => res.json())
         .then(function(res) {
-            console.log(dataField);
+            console.log(file);
             for (var p of formData) {
             console.log(p);
           }

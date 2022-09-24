@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const dotenv = require('dotenv');
+const cors = require('cors');
 
 dotenv.config();
 
@@ -23,6 +24,12 @@ mongoose.connect(process.env.MONGODB_URI,
 
  //  
 app.use(express.json());
+
+
+/*app.use(cors({
+    origin: 'http://localhost:3000',
+    methode: ['GET','POST']
+}))*/
 
 //middleware permettant de gérer certain contrôle.
 app.use((req, res, next) => {
