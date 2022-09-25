@@ -7,6 +7,7 @@ import jwt_decode from "jwt-decode";
 
 
 const InputConnectHooks = (props) => {
+    
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errMsg, setErrMsg] = useState("")
@@ -53,25 +54,24 @@ const InputConnectHooks = (props) => {
         )
         .then(res => res.json())
         .then(function(res) {
-            console.log(res);
-                //console.log(res.token);
+            
+            //console.log(res);
+                console.log(res.token);
                 const decodedToken = jwt_decode(res.token)
                 sessionStorage.setItem('user', JSON.stringify({userId: decodedToken.userId, isAdmin: decodedToken.isAdmin , userName: decodedToken.userName, token: res.token}));
-                console.log(decodedToken);
-        
+                console.log(res);
                 
         
-                
                 setErrMsg(<p className='msg-ErrorDisplay'></p>)
                 navigate(`/acceuil`);
-            
+                window.location.reload()
+                
         })
         .catch(function(error) {
             console.log('error')
             setErrMsg(<p className='msg-ErrorEmail'>Erreur server :500  Paire login/mot de passe incorrecte</p>);
         })
     }
-
 
     return (
         <div className='block-inputConect'>

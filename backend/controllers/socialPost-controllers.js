@@ -1,4 +1,6 @@
 const SocialPost = require("../models/socialPost-model")
+const fs =require('fs')
+
 
 exports.getTest = (req ,res , next) => {
     res.send('Je suis le test')
@@ -46,9 +48,11 @@ exports.modifySocialPost = (req, res, next) => {
   SocialPost.findOne({_id: req.params.id})
     .then((socialPost) => {
       if (socialPost.userId /*=== req.auth.userId || req.auth.isAdmin === true*/) {
-        SocialPost.updateOne({_id: req.params.id} ,{ ...data, _id: req.params.id })
-        .then(() => { res.status(200).json({ message: 'Objet modifié' }) })
-        .catch(error => res.status(400).json({ error }))
+        const fileName = socialPost.imageUrl.split('/images/')[1];
+        fs.unlink(`images/${fileName}`, () => {
+          SocialPost.updateOne({_id: req.params.id} ,{ ...data, _id: req.params.id })
+          .then(() => { res.status(200).json({ message: 'Objet modifié' }) })
+          .catch(error => res.status(400).json({ error }))})
       } else {
         res.status(400).json({ message: 'Not authorized' });
       }
@@ -62,11 +66,12 @@ exports.modifySocialPost = (req, res, next) => {
 exports.DeleteSocialPost = (req, res, next) => {
   SocialPost.findOne({_id: req.params.id})
     .then((socialPost) => {
-      //console.log(req.auth)
+      const fileName = socialPost.imageUrl.split('/images/')[1]
       if (socialPost.userId === req.auth.userId || req.auth.isAdmin === true) {
-        SocialPost.deleteOne({ _id: req.params.id })
-        .then(() => {res.status(200).json({ message: "Post supprimé"})})
-        .catch((error) => res.status(400).json({ error }));
+        fs.unlink(`images/${fileName}`, () => {
+          SocialPost.deleteOne({ _id: req.params.id })
+          .then(() => {res.status(200).json({ message: "Post supprimé"})})
+          .catch((error) => res.status(400).json({ error }))});
       } else {
         res.status(401).json({ message: 'Not authorized' });
       }})

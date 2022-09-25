@@ -7,6 +7,7 @@ function Banner(props) {
     const navigate = useNavigate();
 
 function handleClick1() {
+    
     navigate("/auth/signin")
 }
 function handleClick2() {

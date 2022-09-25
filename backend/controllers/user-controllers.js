@@ -12,10 +12,17 @@ exports.signup = (req, res, next) => {
         userName: req.body.name,
         isAdmin: false
       });
-      //res.status(200).json({message: 'compte crée'});
-      console.log(user);
       user.save()
-        .then()
+        .then((user) => { res.status(200).json({
+          userId: user._id,
+          token: jwt.sign(
+            { userId: user._id,
+              userName: user.userName,
+              isAdmin: user.isAdmin},
+            'RANDOM_TOKEN_SECRET',
+            { expiresIn: '24h' }
+          )
+        }) })
         .catch(error => res.status(500).json({ error }));
     })
     .catch(error => res.status(500).json({ error }))
@@ -23,7 +30,6 @@ exports.signup = (req, res, next) => {
 
 
 exports.getTest = (req ,res , next) => {
-  res.send('Je suis le test signup')
   res.status(200).json(stuff);
 }
 
