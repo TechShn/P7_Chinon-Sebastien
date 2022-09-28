@@ -1,12 +1,13 @@
-import TalkField from "./TalkField/TalkField.js"
+
 import NewsFeed from "./NewsFeed/NewsFeed.js"
+//import NewsFeed2 from "./NewsFeed/NewsFeed2.js"
 
 
 function TalkSpace(props) {
 
     return <div className="talkspace">
-        <TalkField />
-        <NewsFeed option={props.option} />
+        {<NewsFeed option={props.option} />}
+        {/*<NewsFeed2 />*/}
     </div>
 }
 

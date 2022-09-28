@@ -23,14 +23,12 @@ exports.CreateSocialPost = (req, res, next) => {
   const data = req.file ? {
       ...JSON.parse(req.body.dataField),
       imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-  } : {...JSON.parse(req.body.dataField)}; /*JSON.parse(req.body.dataField)*/
-  //console.log(data);
+  } : {...JSON.parse(req.body.dataField)};
   const socialPost = new SocialPost({
     ...data,
     userId: data.userId,
     name: data.userName,
     date: new Date().toLocaleDateString('it-IT') + ' ' + new Date().toLocaleTimeString('it-IT'),
-    //imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
   })
   console.log(data);
   socialPost.save()
@@ -42,17 +40,22 @@ exports.modifySocialPost = (req, res, next) => {
   console.log(req.body);
   const data = req.file ? {
     ...JSON.parse(req.body.dataModif),
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-} : {...JSON.parse(req.body.dataModif)}
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`} : {...JSON.parse(req.body.dataModif)}
 
   SocialPost.findOne({_id: req.params.id})
     .then((socialPost) => {
-      if (socialPost.userId /*=== req.auth.userId || req.auth.isAdmin === true*/) {
-        const fileName = socialPost.imageUrl.split('/images/')[1];
-        fs.unlink(`images/${fileName}`, () => {
-          SocialPost.updateOne({_id: req.params.id} ,{ ...data, _id: req.params.id })
-          .then(() => { res.status(200).json({ message: 'Objet modifié' }) })
-          .catch(error => res.status(400).json({ error }))})
+      if (socialPost.userId === req.auth.userId || req.auth.isAdmin === true) {
+
+        req.file ? 
+          fs.unlink(`images/${socialPost.imageUrl.split('/images/')[1]}`, () => {
+            SocialPost.updateOne({_id: req.params.id} ,{ ...data, _id: req.params.id })
+            .then(() => { res.status(200).json({ message: 'Objet modifié' }) })
+            .catch(error => res.status(400).json({ error }))}) 
+
+            : SocialPost.updateOne({_id: req.params.id} ,{ ...data, _id: req.params.id })
+            .then(() => { res.status(200).json({ message: 'Objet modifié' }) })
+            .catch(error => res.status(400).json({ error }));
+
       } else {
         res.status(400).json({ message: 'Not authorized' });
       }
@@ -66,17 +69,27 @@ exports.modifySocialPost = (req, res, next) => {
 exports.DeleteSocialPost = (req, res, next) => {
   SocialPost.findOne({_id: req.params.id})
     .then((socialPost) => {
-      const fileName = socialPost.imageUrl.split('/images/')[1]
       if (socialPost.userId === req.auth.userId || req.auth.isAdmin === true) {
-        fs.unlink(`images/${fileName}`, () => {
-          SocialPost.deleteOne({ _id: req.params.id })
+        console.log(socialPost)
+        socialPost.imageUrl ? 
+        
+        fs.unlink(`images/${socialPost.imageUrl.split('/images/')[1]}`, () => {
+          SocialPost.deleteOne({_id: req.params.id})
+          .then(() => { res.status(200).json({ message: "Post supprimé" }) })
+          .catch(error => res.status(400).json({ error }))})
+
+        
+
+          : SocialPost.deleteOne({ _id: req.params.id })
           .then(() => {res.status(200).json({ message: "Post supprimé"})})
-          .catch((error) => res.status(400).json({ error }))});
+          .catch((error) => res.status(400).json({ error }));
+          
       } else {
         res.status(401).json({ message: 'Not authorized' });
       }})
     .catch((error) => res.status(400).json({ error }))
 }
+
 
 exports.socialPostLike = (req, res, next) => {
   SocialPost.findOne({_id: req.params.id})

@@ -5,6 +5,7 @@ import SignUp from "./SignUp";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Banner from "../components/Banner/Banner";
 import Home from "./Home"
+import BannerDown from "../components/Banner/BannerDown";
 
 
 
@@ -13,7 +14,7 @@ function App() {
   return <div>
     <BrowserRouter>
       <Routes >
-        <Route path="/"  element={<Banner />}/>
+        <Route path="/"  element={<div><Banner /><BannerDown /></div>}/>
         <Route path="/auth/signin"  element={<SignIn />} />
         <Route path="/auth/signup"  element={<SignUp />} />
         <Route path="/acceuil"  element={<Home  option="postBtnDisplay"/>} />

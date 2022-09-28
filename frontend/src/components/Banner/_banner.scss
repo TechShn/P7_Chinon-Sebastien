@@ -1,43 +1,95 @@
 .block-banner {
     box-sizing: border-box;
     display: flex;
+    justify-content: space-between;
     color: white;
     background-color: maroon;
-    border: 1px solid maroon;
-    border-radius: 10px;
     height: 150px;
     width: 100%;
     overflow: hidden;
+
+    & ul {
+
+        & button {
+            font-weight: 900;
+            background-color: white;
+            color: #ff8c69;
+            border: 2px solid white;
+            border-radius: 30px;
+            box-shadow: 2px 2px 5px lightgray;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+    }
 }
 
 .banner-title {
-    position: relative;
-    left: 60px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     height: 100%;
-    width: 70%;
+    width: 65%;
     margin-block-start: 0em;
     margin-block-end: 0em;
 }
 
 .banner-logo {
     height: 100%;
-    width: 15%;
+    width: 35%;
     object-fit: cover;
-    border: 1px solid maroon;
+}
+
+.bannerDown {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-BannerDown{
+    height: 100%;
 }
 
 @media screen and (max-width: 767px) {
     .banner-title {
-        font-size: 20px;
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        margin-left: 20px;
+    }
+    
+    .banner-logo {
+        width: 100%;
+    }
+
+    .bannerDown {
+        height: 100%;
+    }
+
+    
+    .img-BannerDown{
+        width: 95%;
     }
 }
 
 @media screen and (max-width: 992px) and (min-width: 768px) {
     .banner-title {
-        font-size: 23px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 100%;
+        width: 65%;
+    }
+    
+    .banner-logo {
+        height: 100%;
+        width: 50%;
+        object-fit: cover;
+    }
+    
+    .img-BannerDown{
+        width: 80%
     }
 }
 

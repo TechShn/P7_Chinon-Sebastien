@@ -1,13 +1,11 @@
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo_Groupomania2.png';
 import { useNavigate } from "react-router-dom";
 
 
 function Banner(props) {
-    const text = "Salut Tout le monde !!!"
     const navigate = useNavigate();
 
 function handleClick1() {
-    
     navigate("/auth/signin")
 }
 function handleClick2() {
@@ -15,11 +13,11 @@ function handleClick2() {
 }
 
     return <div className="block-banner">
-        <img src={logo} alt="Logo groupomania" className='banner-logo' />
-        <h1 className='banner-title'>{text.toUpperCase()}</h1>
+        
+        <h1 className='banner-title'><img src={logo} alt="Logo groupomania" className='banner-logo' /></h1>
         <ul className={props.list}>
-            <button onClick={handleClick1}>login</button>
-            <button onClick={handleClick2}>sign up</button>
+            <button className='btnBanner' onClick={handleClick1}>login</button>
+            <button className='btnBanner' onClick={handleClick2}>sign up</button>
         </ul>
         <ul>
             {props.logout}

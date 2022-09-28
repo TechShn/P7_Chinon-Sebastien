@@ -17,7 +17,7 @@
     align-items: center;
     width: 40%;
     height: 500px;
-    border: 1px solid lightgrey;
+    border: 2px solid lightgray;
     border-radius: 15px;
     background-color: lightgray;
     & > h2 {
@@ -65,7 +65,7 @@
     width: 200px;
     font-weight: 700;
     color: white;
-    background-color: maroon;
+    background-color: #ff8c69;
     border: 2px solid gray;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -89,7 +89,7 @@
     width: 200px;
     font-weight: 700;
     color: white;
-    background-color: maroon;
+    background-color: #ff8c69;
     border: 2px solid gray;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -119,4 +119,20 @@
 
 .msg-ErrorDisplay {
     display: none;
+}
+
+@media screen and (max-width: 767px) {
+    .block-form {
+        width: 70%;
+
+        & img {
+            width: 85%
+        }
+    }
+}
+
+@media screen and (max-width: 992px) and (min-width: 768px) {
+    .block-form {
+        width: 50%;
+    }
 }

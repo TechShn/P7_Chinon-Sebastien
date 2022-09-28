@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 //import Img1 from "../../../images/Img1.jpg"
 
 
-let user = JSON.parse(sessionStorage.getItem("user"));
+let user = JSON.parse(localStorage.getItem("user"));
 console.log(user);
+
 
 
 function NewsFeed(props) {
@@ -18,6 +19,63 @@ function NewsFeed(props) {
 
 
 
+    function handleChange(event) {
+        setTextPost(event.target.value)
+    }
+
+    function addAnImage(event) {
+        const file = event.target.files[0]
+
+        setImageUrl(file);
+        console.log(imageUrl);
+    }
+
+
+    function InitSocialPost() {
+        const file = imageUrl
+        const formData = new FormData()
+
+        formData.append('image', file)
+              //console.log(formData);
+        //console.log(file);
+
+        /*for (var p of formData) {
+            console.log(p);
+          }*/
+
+        const dataField = {
+            textPost: textPost,
+            //imageUrl: formData,
+            userId: user.userId,
+            userName: user.userName
+        }
+        const json = JSON.stringify(dataField);
+        
+        formData.append('dataField', json)  
+
+        fetch('http://localhost:4200/api/socialPost', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${user.token}`,
+            },
+            body: formData
+            }
+        )
+        .then(res => res.json())
+        .then(function(res) {
+            console.log(file);
+            for (var p of formData) {
+            console.log(p);
+          }
+          initPost()
+        })
+        .catch(function(error) {
+        })
+    }
+
+
+/*---------------------------------------------------------------------------------------------------------------*/
     function handleonMouseEnterPost(event) {
         navigate(`/acceuil/${event.target.dataset.id}`);
         //const lol = event.target.children[3].children[0].children[0].children[0].className
@@ -60,7 +118,7 @@ function NewsFeed(props) {
         )
         .then(res => res.json())
         .then(function(res) {
-
+            initPost();
         })
         .catch(function(error) {
         })
@@ -80,11 +138,7 @@ function NewsFeed(props) {
         console.log(textPost);
     }
 
-    function addAnImage(event) {
-        const file = event.target.files[0];
-        setImageUrl(file);
-        console.log(imageUrl);
-    }
+    
 
     function handleClickValide(event){
         const str = window.location;
@@ -117,7 +171,10 @@ function NewsFeed(props) {
             }
         )
         .then(res => res.json())
-        .then((newSocialPost) => newSocialPost)
+        .then(function(res) {
+            event.target.parentElement.parentElement.className = 'blockModifyDisplay'
+            initPost();
+        })
         .catch(function(error) {
         })
     }
@@ -125,6 +182,7 @@ function NewsFeed(props) {
 
 
     function handleClickDelete() {
+        
         const str = window.location;
         const url = new URL(str);
         const tokenUrl = url.pathname
@@ -142,35 +200,77 @@ function NewsFeed(props) {
             .then(res => res.json())
             .then(res => {
                 console.log(res);
+                initPost();
             })
             .catch((res) => res.status(400).json(res))
+
+            
     }
 
-    
 
+    const initPost = useCallback( async () => {
+        try {
+            const response = await fetch('http://localhost:4200/api/socialPost', 
+            {headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }})
+
+            const dataResponse = await response.json();
+
+            if(response.ok) {
+                setSocialPost(dataResponse)
+            } else {
+                throw new Error(dataResponse.error);
+            }
+
+        } catch (error) {
+            console.log("Probleme serveur la requete n'est pas partie");
+            console.log(error);
+        }
+    }, [])
+
+    useEffect(() => {
+        initPost()
+    }, [initPost])
     
-    function initPost() {
-        fetch('http://localhost:4200/api/socialPost', 
+    
+    /*const initPost = async () => {
+        const reponse = await fetch('http://localhost:4200/api/socialPost', 
         {headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.token}`
         }})
-            .then(res => res.json())
+            .then((res) => res.json())
             .then(res => {
+                console.log(res);
                 setSocialPost(res)
             }
-            
                 )
             .catch((res) => res.status(400).json(res))
-    }
+    }*/
     
-    useEffect(() => {initPost()}, []);
+
             
 
    return (
 
    <div className="block-newsfeed">
+
+    <div className="block-talkfield">
+            <h2 className="title-text">Exprime toi !</h2>
+            <div className="block-textarea">
+                <textarea className="textarea" rows="3" cols="100" placeholder="Exprime toi ..." onChange={handleChange}></textarea>
+                <input onClick={InitSocialPost} type="submit" value="Poster" className="btn-submit"/>
+            </div>
+            <div className="block-submit">
+                <input onChange={addAnImage} type='file' className="btn-image"/>
+                
+            </div>
+    </div>
+    <div className='filActualite'>
         <h2>Fil d'Actualité</h2>
         {socialPost.map(post => 
             <div onMouseEnter={handleonMouseEnterPost} className='block-Post' key={post._id} data-id={post._id}>
@@ -187,33 +287,30 @@ function NewsFeed(props) {
                             <p className='iconThumbsUp'><i onMouseEnter={handleMouseEnterLike} data-id={post._id} className="fa-solid fa-thumbs-up"></i></p>
                             :  <p><i onMouseEnter={handleMouseEnterLike} className="fa-regular fa-thumbs-up"></i></p>} 
                         </div>
-                        <div>{post.like}</div>
-                    </div>{post.date}
+                        <div className='likeNumber'>{post.like}</div>
+                    </div>
+                    <p>{post.date}</p>
                 </div>
                 
                 
-                {(isAdmin || user.userId === post.userId ) ? <div className={'blockPostBtn'}>
+                {(isAdmin || user.userId === post.userId ) && <div className={'blockPostBtn'}>
                     <div className='postBtn'>
-                        <p data-id={post._id} onClick={handleClickDelete}>Supprimez</p>
+                        <div data-id={post._id} onClick={handleClickDelete}>Supprimez</div>
                         <div onClick={handleClickModify}>
                             Modifier
                             <div className="blockModifyDisplay">
-                                <textarea data-id={post._id} className='inputModifyDisplay' rows="2" cols="121" placeholder="Modifie ton post" onChange={handleModifChange}></textarea>
+                                <textarea data-id={post._id} className='inputModifyDisplay' rows="1" cols="121" placeholder="Modifie ton post" onChange={handleModifChange}></textarea>
                                 <div className='btnModif'>
-                                    <input type="file" data-id={post._id} onChange={addAnImage} />
+                                    {post.imageUrl && <input type="file" data-id={post._id} onChange={addAnImage} />}
                                     <button data-id={post._id} onClick={handleClickValide}>Valider</button>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
-
-                    
-                    
-
-                </div> : "" }
+                </div>}
             </div>
         )}
+        </div>
     </div>
     )
 }

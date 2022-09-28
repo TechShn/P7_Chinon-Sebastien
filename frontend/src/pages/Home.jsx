@@ -17,7 +17,7 @@ const Home = (props) => {
    // const [token, setToken] = useState(tokenUrl)
 
     function handleClick() {
-        sessionStorage.removeItem('user')
+        localStorage.removeItem('user')
         navigate('/')
     }
 

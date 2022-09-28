@@ -1,46 +1,21 @@
 .block-cart {
 
     text-align: center;
-    height: 1000px;
     width: 15%;
-    color: maroon;
-    background-color: lightgoldenrodyellow;
+    color: #ff8c69;
+    background-color: lightgray;
     border: 2px solid black;
 }
 
-.cart-li {
-    color: black;
-    text-align: left;
-}
-
-.cart-li li {
-    
-}
 
 @media screen and (max-width: 767px) {
-    .cart {
-        
+    .block-cart {
+        display: none;
     }
 }
 
 @media screen and (max-width: 992px) and (min-width: 768px) {
-    .cart {
-        width: 15%;
+    .block-cart {
+        display: none;
     }
-}
-
-.popo {
-    text-align: center;
-    height: 1000px;
-    width: 15%;
-    color: maroon;
-    background-color: green;
-    border: 2px solid black;
-}
-
-.btn-test {
-    height: 50px;
-    width: 50px;
-    background-color: rgb(189, 130, 174);
-    margin-top: 50px;
 }

@@ -44,20 +44,11 @@ class Cart extends Component {
 
     render() {
         if(this.state.user2 ) {
-        const member = this.state.user;
+        //const member = this.state.user;
         
         return (
             <div className='block-cart'>
-                <h2>membres</h2>
-                <ul>
-                    <li>{member}</li>
-                </ul>
-                <button onClick={this.modifySet}>Modifier  set</button>
                 <div className="test">
-                    <button onClick={this.comptFuncPlus} className='btn-test'>+</button>
-                    <button onClick={this.comptFuncMoin} className='btn-test'>-</button>
-                    <button onClick={this.comptFuncReset} className='btn-test'>reset</button>
-                    <p>Compteur = {this.state.compteur} </p>
                     <Horloge />
                 </div>
             </div>

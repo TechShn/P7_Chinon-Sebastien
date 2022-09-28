@@ -58,7 +58,7 @@ const InputConnectHooks = (props) => {
             //console.log(res);
                 console.log(res.token);
                 const decodedToken = jwt_decode(res.token)
-                sessionStorage.setItem('user', JSON.stringify({userId: decodedToken.userId, isAdmin: decodedToken.isAdmin , userName: decodedToken.userName, token: res.token}));
+                localStorage.setItem('user', JSON.stringify({userId: decodedToken.userId, isAdmin: decodedToken.isAdmin , userName: decodedToken.userName, token: res.token}));
                 console.log(res);
                 
         
@@ -76,7 +76,7 @@ const InputConnectHooks = (props) => {
     return (
         <div className='block-inputConect'>
                 <form onSubmit={handleChangeSubmit} className='block-form' action="">
-                <img src={logo} alt="Logo groupomania"  />
+                <img className='logoLog' src={logo} alt="Logo groupomania"  />
                 <h2>{props.title}</h2>
                     <div className='block-email'>
                         <label htmlFor="email"></label>

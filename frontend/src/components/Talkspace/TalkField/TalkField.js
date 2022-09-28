@@ -1,13 +1,44 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 
 
-let user = JSON.parse(sessionStorage.getItem('user'))
+let user = JSON.parse(localStorage.getItem('user'))
 //console.log(key);
 
 function TalkField(props) {
+    //const [socialPost, setSocialPost] = useState([])
     const [textPost, setTextPost] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
 
+
+    function test(){
+        initPost()
+    }
+
+    const initPost = useCallback( async () => {
+        try {
+            const response = await fetch('http://localhost:4200/api/socialPost', 
+            {headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }})
+
+            const dataResponse = await response.json();
+
+            if(response.ok) {
+                console.log('lol');
+                //setSocialPost(dataResponse)
+            } else {
+                throw new Error(dataResponse.error);
+            }
+
+        } catch (error) {
+            console.log("Probleme serveur la requete n'est pas partie");
+            console.log(error);
+        }
+    }, [])
+
+            //initPost()
 
     function handleChange(event) {
         setTextPost(event.target.value)
@@ -57,6 +88,7 @@ function TalkField(props) {
             for (var p of formData) {
             console.log(p);
           }
+          initPost()
         })
         .catch(function(error) {
         })
@@ -65,10 +97,14 @@ function TalkField(props) {
     return <div>
         <div className="block-talkfield">
             <h2 className="title-text">Exprime toi !</h2>
-            <div className="block-textarea"><textarea className="textarea" rows="2" cols="120" placeholder="Exprime toi ..." onChange={handleChange}></textarea></div>
+            <button onClick={test}>test</button>
+            <div className="block-textarea">
+                <textarea className="textarea" rows="3" cols="100" placeholder="Exprime toi ..." onChange={handleChange}></textarea>
+                <input onClick={InitSocialPost} type="submit" value="Poster" className="btn-submit"/>
+            </div>
             <div className="block-submit">
                 <input onChange={addAnImage} type='file' className="btn-image"/>
-                <input onClick={InitSocialPost} type="submit" value="Poster" className="btn-submit"/>
+                
             </div>
         </div>
     </div>
