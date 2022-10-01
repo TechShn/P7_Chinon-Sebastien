@@ -54,7 +54,13 @@ function NewsFeed(props) {
         )
         .then(res => res.json())
         .then(function(res) {
-            initPost()
+            initPost();
+            const text = document.getElementsByClassName('textarea')[0];
+            const file = document.getElementsByClassName('btn-image')[0];
+
+            text.value = "";
+            file.value = "";
+            setImageUrl('')
         })
         .catch(function(error) {
         })
@@ -225,7 +231,7 @@ function NewsFeed(props) {
                 <input onClick={SendSocialPost} type="submit" value="Poster" className="btn-submit"/>
             </div>
             <div className="block-submit">
-                <label for="file">Choisissez une image</label> 
+                <label htmlFor="file">Choisissez une image</label> 
                 <input onChange={addAnImage} type='file' className="btn-image"/>
             </div>
     </div>
@@ -240,7 +246,7 @@ function NewsFeed(props) {
                     {post.textPost}
                 </div>
                 <div className='blockImg'>
-                    {post.imageUrl && <img src={post.imageUrl} alt='sauce' className='Img' />}
+                    {post.imageUrl && <img src={post.imageUrl} alt='images' className='Img' />}
                 </div>
                 <div className="block-like" >
                     <div onClick={handleClickLike}  className='socialBtn' data-id={post._id}>
