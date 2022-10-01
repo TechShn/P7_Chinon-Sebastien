@@ -16,8 +16,8 @@ function handleClick2() {
         
         <h1 className='banner-title'><img src={logo} alt="Logo groupomania" className='banner-logo' /></h1>
         <ul className={props.list}>
-            <button className='btnBanner' onClick={handleClick1}>login</button>
-            <button className='btnBanner' onClick={handleClick2}>sign up</button>
+            <button className='btnBanner' onClick={handleClick1}>Connexion</button>
+            <button className='btnBanner' onClick={handleClick2}>Inscription</button>
         </ul>
         <ul>
             {props.logout}

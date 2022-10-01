@@ -2,11 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const dotenv = require('dotenv');
-const cors = require('cors');
-
+//const helmet = require("helmet");
 dotenv.config();
-
-
 
 
 const userRoutes = require('./routes/user-route');
@@ -14,6 +11,7 @@ const SocialPostRoutes = require('./routes/socialPost-route')
 
 
 const app = express();
+//app.use(helmet());
 
 // Fonction permettant de se connecter à une base de donnée
 mongoose.connect(process.env.MONGODB_URI,
@@ -25,11 +23,6 @@ mongoose.connect(process.env.MONGODB_URI,
  //  
 app.use(express.json());
 
-
-/*app.use(cors({
-    origin: 'http://localhost:3000',
-    methode: ['GET','POST']
-}))*/
 
 //middleware permettant de gérer certain contrôle.
 app.use((req, res, next) => {
@@ -44,9 +37,6 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use('/api/auth', userRoutes);
 app.use('/api/socialPost' , SocialPostRoutes);
-
-
-
 
 
 module.exports = app;

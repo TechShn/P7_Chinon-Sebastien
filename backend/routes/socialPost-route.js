@@ -5,7 +5,6 @@ const multer = require("../middleware/multer-config");
 
 const socialPostCtrl = require('../controllers/socialPost-controllers');
 
-//router.get('/', socialPostCtrl.getTest);
 router.get('/', auth, socialPostCtrl.GetAllSocialPost);
 router.post('/', auth, multer, socialPostCtrl.CreateSocialPost);
 router.put('/:id', auth, multer,  socialPostCtrl.modifySocialPost);

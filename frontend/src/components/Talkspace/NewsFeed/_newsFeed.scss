@@ -4,7 +4,6 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    /*height: 760px;*/
     background-color: white;
     border: 2px solid transparent;
     
@@ -13,6 +12,7 @@
 }
 
 .block-talkfield {
+    width: 100%;
     border: 2px solid black;
     background-color: lightgray;
     margin-bottom: 30px;

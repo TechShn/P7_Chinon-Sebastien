@@ -1,3 +1,5 @@
+// Donner une destination au fichie image
+
 const multer = require('multer');
 
 const MIME_TYPES = {

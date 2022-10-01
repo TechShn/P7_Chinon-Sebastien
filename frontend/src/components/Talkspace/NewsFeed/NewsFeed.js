@@ -1,57 +1,47 @@
 import React, { useCallback, useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-//import Img1 from "../../../images/Img1.jpg"
 
-
+// Récuperer les donnée du LocalStorage
 let user = JSON.parse(localStorage.getItem("user"));
-console.log(user);
 
 
 
 function NewsFeed(props) {
     const [socialPost, setSocialPost] = useState([]);
     const [textPost, setTextPost] = useState("");
-    //const [blockModify, setBlockModify] = useState('blockModifyDisplay')
     const [like, setLike] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
     const navigate = useNavigate();
     const isAdmin = user.isAdmin;
 
 
-
+    // Permet de mettre à jour le state textpost en la valeur de l'input
     function handleChange(event) {
         setTextPost(event.target.value)
     }
 
+    // Permet de mettre à jour le state en la valeur du file selectionné
     function addAnImage(event) {
         const file = event.target.files[0]
-
         setImageUrl(file);
-        console.log(imageUrl);
     }
 
-
-    function InitSocialPost() {
+    //Permet de faire une requête POST vers l'API afon d'envoyé les donnée 'textPost' 
+    function SendSocialPost() {
         const file = imageUrl
         const formData = new FormData()
-
-        formData.append('image', file)
-              //console.log(formData);
-        //console.log(file);
-
-        /*for (var p of formData) {
-            console.log(p);
-          }*/
+        
 
         const dataField = {
             textPost: textPost,
-            //imageUrl: formData,
             userId: user.userId,
             userName: user.userName
-        }
+        };
         const json = JSON.stringify(dataField);
-        
-        formData.append('dataField', json)  
+
+        formData.append('image', file);
+        formData.append('dataField', json);
+
 
         fetch('http://localhost:4200/api/socialPost', {
             method: 'POST',
@@ -64,11 +54,7 @@ function NewsFeed(props) {
         )
         .then(res => res.json())
         .then(function(res) {
-            console.log(file);
-            for (var p of formData) {
-            console.log(p);
-          }
-          initPost()
+            initPost()
         })
         .catch(function(error) {
         })
@@ -76,27 +62,27 @@ function NewsFeed(props) {
 
 
 /*---------------------------------------------------------------------------------------------------------------*/
+
+    // Permet d'ajouter l'id du produit dans l'url lorsque la souris atteint le block du post
     function handleonMouseEnterPost(event) {
-        navigate(`/acceuil/${event.target.dataset.id}`);
-        //const lol = event.target.children[3].children[0].children[0].children[0].className
-        //lol === 'iconThumbsUp' ? setLike(false) : setLike(true) 
+        navigate(`/acceuil/${event.currentTarget.dataset.id}`);
+
     }
 
+    // Permet de determiner si le bouton like possède le status "true" ou "false"
     function handleMouseEnterLike(event) {
-        console.log(event.target.className);
-        const thumbsTrue = event.target.className;
+        console.log(event.currentTarget.className);
+        const thumbsTrue = event.currentTarget.className;
         thumbsTrue === 'fa-solid fa-thumbs-up' ? setLike(false) : setLike(true);
     }
 
 
-
+    // Permet de faire une requet POST vers l'API afin d'envoyer les donné 'like'
     function handleClickLike(event) {
         const str = window.location;
         const url = new URL(str);
         const tokenUrl = url.pathname
         const id = tokenUrl.substring(tokenUrl.lastIndexOf('/') + 1)
-
-
 
         setLike(!like)
         console.log(like);
@@ -124,22 +110,19 @@ function NewsFeed(props) {
         })
     }
 
+    // Fait apparaitre la <div> qui permet de faire les modification du post
     function handleClickModify(event) {
-        //setBlockModify('blockModify')
-        /*if(event.target !== event.currentTarget) {
-            return event.target.children[0].className = 'blockModify';
-        }*/
         event.currentTarget.children[0].className = 'blockModify';
-        //console.log(event.currentTarget);
     }
 
+    // Permet de mettre à jour le state textpost en la valeur de l'input
     function handleModifChange(event){
         setTextPost(event.target.value);
         console.log(textPost);
     }
 
     
-
+    // Permet de faire une requet PUT vers l'API afin d'envoyer les donnée dataModif
     function handleClickValide(event){
         const str = window.location;
         const url = new URL(str);
@@ -149,17 +132,14 @@ function NewsFeed(props) {
         const file = imageUrl
         const formData = new FormData()
 
-        formData.append('image', file)
 
         const dataModif = {
             textPost
         }
         const json = JSON.stringify(dataModif);
 
+        formData.append('image', file)
         formData.append('dataModif', json) 
-        for (var p of formData) {
-            console.log(p);
-          }
 
         fetch(`http://localhost:4200/api/socialPost/${id}`, {
             method: 'PUT',
@@ -180,14 +160,12 @@ function NewsFeed(props) {
     }
         
 
-
+    // Permet de faire une requet DELET vers l'API afin de supprimer les donnée lié à l'id
     function handleClickDelete() {
-        
         const str = window.location;
         const url = new URL(str);
         const tokenUrl = url.pathname
         const id = tokenUrl.substring(tokenUrl.lastIndexOf('/') + 1)
-
 
 
         fetch(`http://localhost:4200/api/socialPost/${id}`,{
@@ -203,11 +181,10 @@ function NewsFeed(props) {
                 initPost();
             })
             .catch((res) => res.status(400).json(res))
-
-            
     }
 
 
+        //Permet de faire une requete GET afin de recupérer les donnée de l'API
     const initPost = useCallback( async () => {
         try {
             const response = await fetch('http://localhost:4200/api/socialPost', 
@@ -231,30 +208,12 @@ function NewsFeed(props) {
         }
     }, [])
 
+    // Dans se cas précis useEffect me permet d'éviter de rentrer dans une boucle infini de requete vers l'API
     useEffect(() => {
         initPost()
     }, [initPost])
     
     
-    /*const initPost = async () => {
-        const reponse = await fetch('http://localhost:4200/api/socialPost', 
-        {headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.token}`
-        }})
-            .then((res) => res.json())
-            .then(res => {
-                console.log(res);
-                setSocialPost(res)
-            }
-                )
-            .catch((res) => res.status(400).json(res))
-    }*/
-    
-
-            
-
    return (
 
    <div className="block-newsfeed">
@@ -263,23 +222,26 @@ function NewsFeed(props) {
             <h2 className="title-text">Exprime toi !</h2>
             <div className="block-textarea">
                 <textarea className="textarea" rows="3" cols="100" placeholder="Exprime toi ..." onChange={handleChange}></textarea>
-                <input onClick={InitSocialPost} type="submit" value="Poster" className="btn-submit"/>
+                <input onClick={SendSocialPost} type="submit" value="Poster" className="btn-submit"/>
             </div>
             <div className="block-submit">
+                <label for="file">Choisissez une image</label> 
                 <input onChange={addAnImage} type='file' className="btn-image"/>
-                
             </div>
     </div>
     <div className='filActualite'>
         <h2>Fil d'Actualité</h2>
         {socialPost.map(post => 
             <div onMouseEnter={handleonMouseEnterPost} className='block-Post' key={post._id} data-id={post._id}>
-                <div  className='info' data-id={post._id}><p className='name'>{post.name}</p></div>
-                <div className='post' data-id={post._id}>{post.textPost}</div>
-                <div className='blockImg' data-id={post._id}>
-                {post.imageUrl && <img src={post.imageUrl} alt='sauce' className='Img' data-id={post._id} />}
+                <div  className='info'>
+                    <p className='name'>{post.name}</p>
                 </div>
-
+                <div className='post'>
+                    {post.textPost}
+                </div>
+                <div className='blockImg'>
+                    {post.imageUrl && <img src={post.imageUrl} alt='sauce' className='Img' />}
+                </div>
                 <div className="block-like" >
                     <div onClick={handleClickLike}  className='socialBtn' data-id={post._id}>
                         <div>
@@ -295,14 +257,14 @@ function NewsFeed(props) {
                 
                 {(isAdmin || user.userId === post.userId ) && <div className={'blockPostBtn'}>
                     <div className='postBtn'>
-                        <div data-id={post._id} onClick={handleClickDelete}>Supprimez</div>
+                        <div onClick={handleClickDelete}>Supprimez</div>
                         <div onClick={handleClickModify}>
                             Modifier
                             <div className="blockModifyDisplay">
-                                <textarea data-id={post._id} className='inputModifyDisplay' rows="1" cols="121" placeholder="Modifie ton post" onChange={handleModifChange}></textarea>
+                                <textarea className='inputModifyDisplay' rows="1" cols="121" placeholder="Modifie ton post" onChange={handleModifChange}></textarea>
                                 <div className='btnModif'>
-                                    {post.imageUrl && <input type="file" data-id={post._id} onChange={addAnImage} />}
-                                    <button data-id={post._id} onClick={handleClickValide}>Valider</button>
+                                    {post.imageUrl && <input type="file" onChange={addAnImage} />}
+                                    <button onClick={handleClickValide}>Valider</button>
                                 </div>
                             </div>
                         </div>

@@ -1,5 +1,3 @@
-
-
 .block-textarea {
     display: flex;
     justify-content: center;
@@ -25,13 +23,25 @@
 }
 
 .btn-image {
+    height: 25px;
+    margin-top: 5px;
 }
+
 
 .block-submit {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
     text-align: center;
+
+
+    & label {
+        display: inline-block;
+        font-weight: 700;
+        color: black;
+        border-radius: 5px;
+        padding: 5px;
+    }
 }
 
 .btn-submit {
@@ -44,7 +54,7 @@
     border-bottom-right-radius: 20px;
     border-top-right-radius: 20px;
     text-align: center;
-    color: white;
+    color: black;
     background-color: #ff8c69;
     cursor: pointer;
 }

@@ -1,5 +1,13 @@
 .block-horloge {
     height: 100px;
     width: 100%;
-    margin-top: 10px;
+    font-size: 20px;
+    font-weight: 900;
+    color: black;
+    margin-top: 70px;
+    & div {
+        color: maroon;
+        font-weight: 800;
+        margin-top: 5px;
+    }
 }

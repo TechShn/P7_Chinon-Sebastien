@@ -7,7 +7,7 @@ const Identification = () => {
     return(
         <div className="page">
             <Banner />
-            <InputConnectHooks title="Connectez Vous !" fetch="login"/>
+            <InputConnectHooks title="Connectez vous !" fetch="login"/>
             <Footer />
         </div>
     )

@@ -3,18 +3,10 @@ import Footer from "../components/Footer/Footer";
 import Cart from "../components/Cart/Cart";
 import Talkspace from "../components/Talkspace/TalkSpace"
 import { useNavigate } from "react-router-dom";
-//import { useState } from "react";
 
 const Home = (props) => {
-    const logout = (<button onClick={handleClick}>logout</button>)
+    const logout = (<button onClick={handleClick}>Déconnexion</button>)
     const navigate = useNavigate();
-
-    //const str = window.location;
-    //const url = new URL(str);
-    //const tokenUrl = url.searchParams.get('token')
-    //console.log(tokenUrl);
-
-   // const [token, setToken] = useState(tokenUrl)
 
     function handleClick() {
         localStorage.removeItem('user')

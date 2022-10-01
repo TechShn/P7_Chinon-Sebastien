@@ -1,12 +1,11 @@
 const SocialPost = require("../models/socialPost-model")
 const fs =require('fs')
 
+//sanitize permet de se proteger des different type d'injection
+var sanitize = require('mongo-sanitize');
 
-exports.getTest = (req ,res , next) => {
-    res.send('Je suis le test')
-    res.status(200).json(stuff);
-  }
 
+//Récuprer tout les post de la base de donnée
 exports.GetAllSocialPost = (req, res, next) => {
   SocialPost.find().sort({date: -1})
     .then((socialPost) => {
@@ -19,11 +18,13 @@ exports.GetAllSocialPost = (req, res, next) => {
     });
 }
 
+
+//Créer un post
 exports.CreateSocialPost = (req, res, next) => {
   const data = req.file ? {
-      ...JSON.parse(req.body.dataField),
+      ...JSON.parse(sanitize(req.body.dataField)),
       imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-  } : {...JSON.parse(req.body.dataField)};
+  } : {...JSON.parse(sanitize(req.body.dataField))};
   const socialPost = new SocialPost({
     ...data,
     userId: data.userId,
@@ -36,11 +37,12 @@ exports.CreateSocialPost = (req, res, next) => {
   .catch((error) => res.status(400).json({ error }))
 }
 
+//Modifier un post
 exports.modifySocialPost = (req, res, next) => {
   console.log(req.body);
   const data = req.file ? {
-    ...JSON.parse(req.body.dataModif),
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`} : {...JSON.parse(req.body.dataModif)}
+    ...JSON.parse(sanitize(req.body.dataModif)),
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`} : {...JSON.parse(sanitize(req.body.dataModif))}
 
   SocialPost.findOne({_id: req.params.id})
     .then((socialPost) => {
@@ -65,7 +67,7 @@ exports.modifySocialPost = (req, res, next) => {
     });
 }
 
-
+// Sipprimer un post
 exports.DeleteSocialPost = (req, res, next) => {
   SocialPost.findOne({_id: req.params.id})
     .then((socialPost) => {
@@ -90,7 +92,7 @@ exports.DeleteSocialPost = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }))
 }
 
-
+// Liker un post
 exports.socialPostLike = (req, res, next) => {
   SocialPost.findOne({_id: req.params.id})
     .then((socialPost) => {
@@ -103,7 +105,7 @@ exports.socialPostLike = (req, res, next) => {
 
       if (socialPost.userLiked.includes(req.body.userId) && req.body.like === false) {
         console.log('post unliked');
-        SocialPost.updateOne({_id: req.params.id}, { $inc: {like: -1}, $pull: {userLiked: req.body.userId} })
+        SocialPost.updateOne({_id: req.params.id}, { $inc: {like: -1}, $pull: {userLiked: sanitize(req.body.userId)} })
         .then(() => res.status(200).json())
         .catch(error => res.status(400).json({ error }))
       }
