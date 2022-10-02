@@ -30,7 +30,7 @@ const InputConnectHooks = (props) => {
 
     function handleChangePassword(event) {
         setPassword(event.target.value)
-        setErrMsg(regexPassword ? "" : <p className='msg-ErrorEmail'>Mots de passe non valide</p>)
+        setErrMsg(regexPassword ? "" : <p className='msg-ErrorEmail'><b>Mots de passe non valide</b> (Une majuscule, une minuscule et un chiffre minimum)</p>)
         setSubmit(regexEmail && regexPassword ? <button  type="submit" id="ConnexionID" name="ConnexionID" value="Connexion">Connexion</button>
          : <button  type="submit" id="ConnexionIDInactif" name="ConnexionID" value="Connexion">Connexion</button>)
     }
